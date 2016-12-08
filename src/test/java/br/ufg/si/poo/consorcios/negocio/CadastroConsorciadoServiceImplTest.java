@@ -19,13 +19,17 @@ public class CadastroConsorciadoServiceImplTest {
 
 	@Mock private ConsorciadoRepositorio repositorioMock;
 
-	private CadastroConsorciadoService sut;
-
 	// Inicia uma Rule. Uma rule é uma regra verificada ao final da execução de cada
 	// teste, verificando se uma exceção foi lançada ou não.
 	// Inicialmente é configurado para não experar nenhuma exceção
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
+
+	// SUT - Stub under test
+	// Interface que possui as interfaces públicas a serem testadas
+	private CadastroConsorciadoService sut;
+
+	private Consorciado cons;
 
 	@Before
 	public void init() throws Exception {
@@ -34,16 +38,15 @@ public class CadastroConsorciadoServiceImplTest {
 
 		// Instância a implementação de CadastroConsorciadoService
 		sut = new CadastroConsorciadoServiceImpl(repositorioMock);
-	}
 
-	@Test
-	public void deve_possibilitar_cadastrar_novo_consorciado() throws Exception {
-		// Preparando o teste. Criando um consorciado para submeter.
 		Consorciado cons = new Consorciado();
 		cons.setNome("Jéssica Millene");
 		cons.setEmail("jessica@email.com");
 		cons.setCpf("34775164198");
+	}
 
+	@Test
+	public void deve_possibilitar_cadastrar_novo_consorciado_com_todos_os_dados_validos() throws Exception {
 		// Executando método
 		sut.cadastrarNovo(cons);
 
@@ -56,10 +59,7 @@ public class CadastroConsorciadoServiceImplTest {
 	@Test
 	public void nao_deve_persistir_consorciado_caso_nao_tenha_nome_informado() throws Exception {
 		// Preparando o teste. Criando um consorciado para submeter.
-		Consorciado cons = new Consorciado();
 		cons.setNome(null);
-		cons.setEmail("jessica@email.com");
-		cons.setCpf("34775164198");
 
 		// Configurando exceção esperada
 		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
@@ -67,6 +67,11 @@ public class CadastroConsorciadoServiceImplTest {
 
 		// Execução da funcionalidade
 		sut.cadastrarNovo(cons);
+	}
+
+	@Test
+	public void nao_deve_persistir_consorciado_caso_nome_esteja_vazio() throws Exception {
+
 	}
 
 }
