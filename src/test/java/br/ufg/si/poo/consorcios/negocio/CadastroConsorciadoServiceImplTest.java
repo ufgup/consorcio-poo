@@ -157,4 +157,19 @@ public class CadastroConsorciadoServiceImplTest {
 		sut.cadastrarNovo(cons);
 	}
 
+	@Test
+	public void nao_deve_persistir_consorciado_caso_exista_outro_consorciado_com_mesmo_cpf() throws Exception {
+		// Configura a reposta esperada da classe Mockada.
+		// Quando procurar no repositorio uma instância de consorciado com CPF '34775164198' deve retornar uma instância
+		// desse usuário preenchida.
+		when(repositorioMock.findByCpf(cons.getCpf())).thenReturn(cons);
+
+		// Configurando exceção esperada
+		expectedException.expect(NegocioException.class);
+		expectedException.expectMessage("Já existe outro usuário cadastrado com o CPF '34775164198'");
+
+		// Executando funcionalidade.
+		sut.cadastrarNovo(cons);
+	}
+
 }

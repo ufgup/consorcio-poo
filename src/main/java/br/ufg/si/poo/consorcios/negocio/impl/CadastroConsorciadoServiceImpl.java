@@ -30,12 +30,25 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 
 		validarDadosConsorciado(cons);
 
+		verificaUnicidadeDeConsorciadoPorEmail(cons);
+
+		verificandoUnicidadeDeConsorciadoPorCPF(cons);
+
+		repositorio.save(cons);
+	}
+
+	private void verificandoUnicidadeDeConsorciadoPorCPF(Consorciado cons) throws NegocioException {
+		Consorciado doBanco = repositorio.findByCpf(cons.getCpf());
+		if(doBanco != null) {
+			throw new NegocioException(String.format("Já existe outro usuário cadastrado com o CPF '%s'", cons.getCpf()));
+		}
+	}
+
+	private void verificaUnicidadeDeConsorciadoPorEmail(Consorciado cons) throws NegocioException {
 		Consorciado doBanco = repositorio.findByEmail(cons.getEmail());
 		if(doBanco != null) {
 			throw new NegocioException(String.format("Já existe outro usuário cadastrado com o email '%s'", cons.getEmail()));
 		}
-
-		repositorio.save(cons);
 	}
 
 	private void validarDadosConsorciado(Consorciado cons) throws ConsorciadoInvalidoException {

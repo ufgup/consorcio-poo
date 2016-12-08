@@ -24,4 +24,12 @@ public interface ConsorciadoRepositorio {
 	 */
 	Consorciado findByEmail(String email);
 
+	/**
+	 * Busca um consorciado no repositório usando o CPF como parâmetro de busca
+	 *
+	 * @param cpf a ser procurado no repositório
+	 * @return uma instância de {@link Consorciado} com aquele CPF ou <code>null</code> caso não exista
+	 */
+	Consorciado findByCpf(String cpf);
+
 }
