@@ -28,7 +28,8 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 	@Override
 	public void cadastrarNovo(Consorciado cons) throws NegocioException {
 
-		if(cons.getNome() == null) {
+		if(cons.getNome() == null
+				|| "".equals(cons.getNome())) {
 			throw new ConsorciadoInvalidoException("Consorciado sem nome. Informe um nome válido");
 		}
 

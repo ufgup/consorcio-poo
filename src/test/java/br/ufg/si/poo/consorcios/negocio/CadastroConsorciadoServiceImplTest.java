@@ -58,7 +58,7 @@ public class CadastroConsorciadoServiceImplTest {
 
 	@Test
 	public void nao_deve_persistir_consorciado_caso_nao_tenha_nome_informado() throws Exception {
-		// Preparando o teste. Criando um consorciado para submeter.
+		// Preparando o teste. Setando null no nome do consorciado
 		cons.setNome(null);
 
 		// Configurando exceção esperada
@@ -71,6 +71,15 @@ public class CadastroConsorciadoServiceImplTest {
 
 	@Test
 	public void nao_deve_persistir_consorciado_caso_nome_esteja_vazio() throws Exception {
+		// Preparando o teste. Setando nome do consorciado vazio
+		cons.setNome("");
+
+		// Configurando exceção esperada
+		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
+		expectedException.expectMessage("Consorciado sem nome. Informe um nome válido"); // Mensagem experada na exception
+
+		// Execução da funcionalidade
+		sut.cadastrarNovo(cons);
 
 	}
 
