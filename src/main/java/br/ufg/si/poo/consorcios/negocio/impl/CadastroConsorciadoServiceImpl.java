@@ -28,16 +28,21 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 	@Override
 	public void cadastrarNovo(Consorciado cons) throws NegocioException {
 
+		validarDadosConsorciado(cons);
+
+		repositorio.save(cons);
+	}
+
+	private void validarDadosConsorciado(Consorciado cons) throws ConsorciadoInvalidoException {
 		if(cons.getNome() == null
 				|| "".equals(cons.getNome())) {
 			throw new ConsorciadoInvalidoException("Consorciado sem nome. Informe um nome válido");
 		}
 
-		if(cons.getEmail() == null) {
+		if(cons.getEmail() == null
+				|| "".equals(cons.getEmail())) {
 			throw new ConsorciadoInvalidoException("Consorciado sem email. Informe um email válido");
 		}
-
-		repositorio.save(cons);
 	}
 
 }
