@@ -39,7 +39,7 @@ public class CadastroConsorciadoServiceImplTest {
 		// Instância a implementação de CadastroConsorciadoService
 		sut = new CadastroConsorciadoServiceImpl(repositorioMock);
 
-		Consorciado cons = new Consorciado();
+		cons = new Consorciado();
 		cons.setNome("Jéssica Millene");
 		cons.setEmail("jessica@email.com");
 		cons.setCpf("34775164198");
