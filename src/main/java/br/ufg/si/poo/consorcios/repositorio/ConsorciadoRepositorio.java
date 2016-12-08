@@ -16,4 +16,12 @@ public interface ConsorciadoRepositorio {
 	 */
 	void save(Consorciado cons);
 
+	/**
+	 * Verifica se existe algum {@link Consorciado} no repositorio com o email recebido por parâmetro
+	 *
+	 * @param email a ser usado na busca
+	 * @return uma instância de {@link Consorciado} com aquele email ou <code>null</code> caso não exista
+	 */
+	Consorciado findByEmail(String email);
+
 }

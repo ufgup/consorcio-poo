@@ -30,6 +30,11 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 
 		validarDadosConsorciado(cons);
 
+		Consorciado doBanco = repositorio.findByEmail(cons.getEmail());
+		if(doBanco != null) {
+			throw new NegocioException(String.format("Já existe outro usuário cadastrado com o email '%s'", cons.getEmail()));
+		}
+
 		repositorio.save(cons);
 	}
 

@@ -1,7 +1,7 @@
 package br.ufg.si.poo.consorcios.negocio;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.ufg.si.poo.consorcios.modelo.Consorciado;
 import br.ufg.si.poo.consorcios.negocio.exceptions.ConsorciadoInvalidoException;
+import br.ufg.si.poo.consorcios.negocio.exceptions.NegocioException;
 import br.ufg.si.poo.consorcios.negocio.impl.CadastroConsorciadoServiceImpl;
 import br.ufg.si.poo.consorcios.repositorio.ConsorciadoRepositorio;
 
@@ -39,10 +40,16 @@ public class CadastroConsorciadoServiceImplTest {
 		// Instância a implementação de CadastroConsorciadoService
 		sut = new CadastroConsorciadoServiceImpl(repositorioMock);
 
+		// Cria uma instância de Consorciado com todos os valores válidos
 		cons = new Consorciado();
 		cons.setNome("Jéssica Millene");
 		cons.setEmail("jessica@email.com");
 		cons.setCpf("34775164198");
+
+		// Configurando comportamento padrão das chamadas dos Mocks
+		// Quando procurar no repositorio de Consorciados um consorciado com o email 'jessica@email.com' deve retornar null
+		// ou seja, não existe no repositorio nenhum consorciado com esse email.
+		when(repositorioMock.findByEmail(cons.getEmail())).thenReturn(null);
 	}
 
 	@Test
@@ -132,6 +139,21 @@ public class CadastroConsorciadoServiceImplTest {
 		expectedException.expectMessage("Consorciado sem CPF. Informe um CPF válido"); // Mensagem experada na exception
 
 		// Executando a funcionalidade
+		sut.cadastrarNovo(cons);
+	}
+
+	@Test
+	public void nao_deve_persistir_consorciado_caso_exista_outro_consorciado_com_mesmo_email() throws Exception {
+		// Configura a reposta esperada da classe Mockada.
+		// Quando procurar no repositorio uma instância de consorciado com email 'jessica@email.com' deve retornar uma instância
+		// desse usuário preenchida.
+		when(repositorioMock.findByEmail(cons.getEmail())).thenReturn(cons);
+
+		// Configurando exceção esperada
+		expectedException.expect(NegocioException.class);
+		expectedException.expectMessage("Já existe outro usuário cadastrado com o email 'jessica@email.com'");
+
+		// Executando funcionalidade.
 		sut.cadastrarNovo(cons);
 	}
 
