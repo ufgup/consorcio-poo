@@ -83,4 +83,16 @@ public class CadastroConsorciadoServiceImplTest {
 
 	}
 
+	@Test
+	public void nao_deve_persistir_consorciado_com_email_nulo() throws Exception {
+		// Preparando o teste. Setando null no email do consorciado
+		cons.setEmail(null);
+
+		// Configurando exceção esperada
+		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
+		expectedException.expectMessage("Consorciado sem email. Informe um email válido"); // Mensagem experada na exception
+
+		sut.cadastrarNovo(cons);
+	}
+
 }

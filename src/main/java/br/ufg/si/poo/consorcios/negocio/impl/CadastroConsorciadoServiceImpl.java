@@ -33,6 +33,10 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 			throw new ConsorciadoInvalidoException("Consorciado sem nome. Informe um nome válido");
 		}
 
+		if(cons.getEmail() == null) {
+			throw new ConsorciadoInvalidoException("Consorciado sem email. Informe um email válido");
+		}
+
 		repositorio.save(cons);
 	}
 
