@@ -1,7 +1,7 @@
 package br.ufg.si.poo.consorcios.negocio;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -92,6 +92,7 @@ public class CadastroConsorciadoServiceImplTest {
 		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
 		expectedException.expectMessage("Consorciado sem email. Informe um email válido"); // Mensagem experada na exception
 
+		// Executando a funcionalidade
 		sut.cadastrarNovo(cons);
 	}
 
@@ -104,6 +105,33 @@ public class CadastroConsorciadoServiceImplTest {
 		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
 		expectedException.expectMessage("Consorciado sem email. Informe um email válido"); // Mensagem experada na exception
 
+		// Executando a funcionalidade
+		sut.cadastrarNovo(cons);
+	}
+
+	@Test
+	public void nao_deve_persistir_consorciado_com_cpf_nulo() throws Exception {
+		// Preparando o teste. Setando null no CPF do consorciado
+		cons.setCpf(null);
+
+		// Configurando exceção esperada
+		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
+		expectedException.expectMessage("Consorciado sem CPF. Informe um CPF válido"); // Mensagem experada na exception
+
+		// Executando a funcionalidade
+		sut.cadastrarNovo(cons);
+	}
+
+	@Test
+	public void nao_deve_persistir_consorciado_com_cpf_vazio() throws Exception {
+		// Preparando o teste. Setando vazio no CPF
+		cons.setCpf("");
+
+		// Configurando exceção esperada
+		expectedException.expect(ConsorciadoInvalidoException.class); // Exception esperada na execução
+		expectedException.expectMessage("Consorciado sem CPF. Informe um CPF válido"); // Mensagem experada na exception
+
+		// Executando a funcionalidade
 		sut.cadastrarNovo(cons);
 	}
 

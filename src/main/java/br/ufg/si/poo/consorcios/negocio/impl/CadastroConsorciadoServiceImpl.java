@@ -43,6 +43,11 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 				|| "".equals(cons.getEmail())) {
 			throw new ConsorciadoInvalidoException("Consorciado sem email. Informe um email válido");
 		}
+
+		if(cons.getCpf() == null
+				|| "".equals(cons.getCpf())) {
+			throw new ConsorciadoInvalidoException("Consorciado sem CPF. Informe um CPF válido");
+		}
 	}
 
 }
