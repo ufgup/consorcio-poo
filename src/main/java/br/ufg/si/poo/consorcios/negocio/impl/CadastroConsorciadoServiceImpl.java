@@ -2,6 +2,8 @@ package br.ufg.si.poo.consorcios.negocio.impl;
 
 import br.ufg.si.poo.consorcios.modelo.Consorciado;
 import br.ufg.si.poo.consorcios.negocio.CadastroConsorciadoService;
+import br.ufg.si.poo.consorcios.negocio.exceptions.ConsorciadoInvalidoException;
+import br.ufg.si.poo.consorcios.negocio.exceptions.NegocioException;
 import br.ufg.si.poo.consorcios.repositorio.ConsorciadoRepositorio;
 
 /**
@@ -24,7 +26,12 @@ public class CadastroConsorciadoServiceImpl implements CadastroConsorciadoServic
 	}
 
 	@Override
-	public void cadastrarNovo(Consorciado cons) {
+	public void cadastrarNovo(Consorciado cons) throws NegocioException {
+
+		if(cons.getNome() == null) {
+			throw new ConsorciadoInvalidoException("Consorciado sem nome. Informe um nome válido");
+		}
+
 		repositorio.save(cons);
 	}
 
