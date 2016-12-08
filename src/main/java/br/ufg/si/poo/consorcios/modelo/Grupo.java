@@ -1,4 +1,4 @@
-package br.ufg.poo.consorcios.modelo;
+package br.ufg.si.poo.consorcios.modelo;
 
 import java.util.List;
 
