@@ -3,6 +3,8 @@ package br.ufg.si.poo.consorcios.negocio;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -226,6 +228,55 @@ public class CriadorGrupoServiceImplTest {
 		// Executando funcionalidade
 		sut.criarNovo(grupo);
 
+		// Verifica se o responsável está na lista de Participantes.
 		assertTrue(grupo.getParticipantes().contains(cons));
+	}
+
+	@Test
+	public void deve_ser_possivel_inserir_novo_participante_em_grupo_aberto_existente() throws Exception {
+		// Criando novos participante
+		Consorciado novo = new Consorciado();
+		novo.setNome("Leticia");
+		novo.setEmail("leticia@email.com");
+		novo.setCpf("83432536801");
+
+		// Executando funcionalidade
+		sut.adicionarParticipante(grupo, novo);
+
+		// Validando se consorciado foi adicionado ao grupo
+		assertTrue(grupo.getParticipantes().contains(novo));
+
+		// Verificando se consorcio será salvo
+		verify(repositorioMock).save(grupo);
+	}
+
+	@Test
+	public void deve_ser_possivel_inserir_varios_participantes_em_grupo_aberto_existente() throws Exception {
+		// Criando novos participante
+		Consorciado novo = new Consorciado();
+		novo.setNome("Leticia");
+		novo.setEmail("leticia@email.com");
+		novo.setCpf("83432536801");
+
+		Consorciado novo2 = new Consorciado();
+		novo2.setNome("Amanda");
+		novo2.setEmail("amanda@email.com");
+		novo2.setCpf("95815455814");
+
+		Consorciado novo3 = new Consorciado();
+		novo3.setNome("Fernanda");
+		novo3.setEmail("fernanda@email.com");
+		novo3.setCpf("14656216879");
+
+		// executando funcionalidades
+		sut.adicionarParticipantes(grupo, Arrays.asList(novo, novo2, novo3));
+
+		// Validando se consorciados foram adicionados à lista de participantes
+		assertTrue(grupo.getParticipantes().contains(novo));
+		assertTrue(grupo.getParticipantes().contains(novo2));
+		assertTrue(grupo.getParticipantes().contains(novo3));
+
+		// Verificando se o grupo será salvo
+		verify(repositorioMock).save(grupo);
 	}
 }

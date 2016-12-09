@@ -1,5 +1,9 @@
 package br.ufg.si.poo.consorcios.negocio.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
+import br.ufg.si.poo.consorcios.modelo.Consorciado;
 import br.ufg.si.poo.consorcios.modelo.Grupo;
 import br.ufg.si.poo.consorcios.negocio.CriadorGrupoService;
 import br.ufg.si.poo.consorcios.negocio.exceptions.GrupoInvalidoException;
@@ -23,6 +27,18 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 		validaDadosDoGrupo(grupo);
 
 		grupo.getParticipantes().add(grupo.getResponsavel());
+
+		repositorio.save(grupo);
+	}
+
+	@Override
+	public void adicionarParticipante(Grupo grupo, Consorciado novo) {
+		adicionarParticipantes(grupo, Arrays.asList(novo));
+	}
+
+	@Override
+	public void adicionarParticipantes(Grupo grupo, List<Consorciado> novos) {
+		grupo.getParticipantes().addAll(novos);
 
 		repositorio.save(grupo);
 	}
