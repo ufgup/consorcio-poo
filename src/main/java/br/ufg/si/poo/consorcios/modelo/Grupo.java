@@ -1,5 +1,6 @@
 package br.ufg.si.poo.consorcios.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,10 @@ public class Grupo {
 	private Integer diaPagamentoMensalidade;
 	private Integer diaPagamentoContemplacao;
 	private List<Consorciado> participantes;
+
+	public Grupo() {
+		participantes = new ArrayList<>();
+	}
 
 	/**
 	 * @return the responsavel

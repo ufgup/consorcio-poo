@@ -220,4 +220,12 @@ public class CriadorGrupoServiceImplTest {
 		// Executando funcionalidade
 		sut.criarNovo(grupo);
 	}
+
+	@Test
+	public void ao_criar_um_grupo_o_responsavel_deve_ser_atribuido_como_participante() throws Exception {
+		// Executando funcionalidade
+		sut.criarNovo(grupo);
+
+		assertTrue(grupo.getParticipantes().contains(cons));
+	}
 }

@@ -22,6 +22,8 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 	public void criarNovo(Grupo grupo) throws NegocioException {
 		validaDadosDoGrupo(grupo);
 
+		grupo.getParticipantes().add(grupo.getResponsavel());
+
 		repositorio.save(grupo);
 	}
 
