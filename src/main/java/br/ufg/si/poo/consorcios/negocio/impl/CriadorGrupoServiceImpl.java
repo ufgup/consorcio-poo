@@ -30,8 +30,13 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 			throw new GrupoInvalidoException("Grupo sem consorciado responsável. Atribua um consorciado responsável.");
 		}
 
-		if(grupo.getMensalidadeInicial() == null) {
+		if(grupo.getMensalidadeInicial() == null
+				|| grupo.getMensalidadeInicial() == 0.0) {
 			throw new GrupoInvalidoException("Grupo sem mensalidade inicial. Atribua um valor para mensalidade inicial.");
+		}
+
+		if(grupo.getMensalidadeInicial() < 0.0) {
+			throw new GrupoInvalidoException("Grupo com mensalidade inicial invalida. Atribua um valor maior que 0 para mensalidade inicial.");
 		}
 	}
 

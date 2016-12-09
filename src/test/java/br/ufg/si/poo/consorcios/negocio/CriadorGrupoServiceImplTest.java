@@ -93,4 +93,32 @@ public class CriadorGrupoServiceImplTest {
 		// Executando funcionalidade
 		sut.criarNovo(grupo);
 	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_mensalidade_inicial_zerada() throws Exception {
+		// Preparando o testes
+		// Setando 0 na mensalidade inicial do grupo
+		grupo.setMensalidadeInicial(0.0);
+
+		// Configurando exceção esperada na execução do teste
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo sem mensalidade inicial. Atribua um valor para mensalidade inicial.");
+
+		// Executando funcionalidade
+		sut.criarNovo(grupo);
+	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_mensalidade_inicial_negativa() throws Exception {
+		// Preparando o testes
+		// Setando valor negativo na mensalidade inicial do grupo
+		grupo.setMensalidadeInicial(-10.0);
+
+		// Configurando exceção esperada na execução do teste
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo com mensalidade inicial invalida. Atribua um valor maior que 0 para mensalidade inicial.");
+
+		// Executando funcionalidade
+		sut.criarNovo(grupo);
+	}
 }
