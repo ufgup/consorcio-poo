@@ -46,6 +46,20 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 		if(grupo.getIncrementoMensal() < 0.0) {
 			throw new GrupoInvalidoException("Grupo com incremento mensal negativo. Atribua um valor positivo para incremento mensal.");
 		}
+
+		if(grupo.getDiaPagamentoContemplacao() < 1
+				|| grupo.getDiaPagamentoContemplacao() > 28) {
+			throw new GrupoInvalidoException("Grupo com dia para contemplação inválido. Atribua um dia entre 1 e 28");
+		}
+
+		if(grupo.getDiaPagamentoMensalidade() < 1
+				|| grupo.getDiaPagamentoMensalidade() > 28) {
+			throw new GrupoInvalidoException("Grupo com dia para pagamento da mensalidade inválido. Atribua um dia entre 1 e 28");
+		}
+
+		if(grupo.getDiaPagamentoContemplacao() < grupo.getDiaPagamentoMensalidade()) {
+			throw new GrupoInvalidoException("Dia para contemplação menor que dia para pagamento da mensalidade. Favor, atribuir dia da contemplação maior que dia do pagamento da mensalidade");
+		}
 	}
 
 }

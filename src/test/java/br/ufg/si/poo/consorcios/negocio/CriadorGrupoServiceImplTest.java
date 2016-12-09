@@ -149,4 +149,75 @@ public class CriadorGrupoServiceImplTest {
 		// Executando funcionalidade
 		sut.criarNovo(grupo);
 	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_dia_da_contemplacao_com_valor_menor_que_1() throws Exception {
+		// Preparando testes
+		// Setando dia inválido para contemplação
+		grupo.setDiaPagamentoContemplacao(0);
+
+		// Configurando a exceção esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo com dia para contemplação inválido. Atribua um dia entre 1 e 28");
+
+		// Executando a funcionalidade
+		sut.criarNovo(grupo);
+	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_dia_da_contemplacao_com_valor_maior_que_28() throws Exception {
+		// Preparando testes
+		// Setando dia inválido para contemplação
+		grupo.setDiaPagamentoContemplacao(29);
+
+		// Configurando a exceção esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo com dia para contemplação inválido. Atribua um dia entre 1 e 28");
+
+		// Executando a funcionalidade
+		sut.criarNovo(grupo);
+	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_dia_da_pagamento_mensalidade_com_valor_menor_que_1() throws Exception {
+		// Preparando testes
+		// Setando dia inválido para contemplação
+		grupo.setDiaPagamentoMensalidade(0);
+
+		// Configurando a exceção esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo com dia para pagamento da mensalidade inválido. Atribua um dia entre 1 e 28");
+
+		// Executando a funcionalidade
+		sut.criarNovo(grupo);
+	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_dia_da_pagamento_mensalidade_com_valor_maior_que_28() throws Exception {
+		// Preparando testes
+		// Setando dia inválido para contemplação
+		grupo.setDiaPagamentoMensalidade(29);
+
+		// Configurando a exceção esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo com dia para pagamento da mensalidade inválido. Atribua um dia entre 1 e 28");
+
+		// Executando a funcionalidade
+		sut.criarNovo(grupo);
+	}
+
+	@Test
+	public void nao_deve_salvar_grupo_caso_dia_da_contemplacao_for_menor_que_dia_pagamento_mensalidade() throws Exception {
+		// Preparando testes.
+		// Configurando datas inconsistente
+		grupo.setDiaPagamentoContemplacao(5);
+		grupo.setDiaPagamentoMensalidade(15);
+
+		// Configurando excecao esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Dia para contemplação menor que dia para pagamento da mensalidade. Favor, atribuir dia da contemplação maior que dia do pagamento da mensalidade");
+
+		// Executando funcionalidade
+		sut.criarNovo(grupo);
+	}
 }
