@@ -121,4 +121,32 @@ public class CriadorGrupoServiceImplTest {
 		// Executando funcionalidade
 		sut.criarNovo(grupo);
 	}
+
+	@Test
+	public void nao_deve_salvar_grupo_sem_incremento_mensal() throws Exception {
+		// Preparando o teste
+		// Setando null no incremento mensal
+		grupo.setIncrementoMensal(null);
+
+		// Configurando a exceção esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo sem incremento mensal. Atribua um valor para incremento mensal.");
+
+		// Executando funcionalidade
+		sut.criarNovo(grupo);
+	}
+
+	@Test
+	public void nao_deve_salvar_grupo_com_incremento_mensal_negativo() throws Exception {
+		// Preparando o testes
+		// Setando valor negativo para o incremento mensal
+		grupo.setIncrementoMensal(-1.0);
+
+		// Configurando a exceção esperada
+		expectedException.expect(GrupoInvalidoException.class);
+		expectedException.expectMessage("Grupo com incremento mensal negativo. Atribua um valor positivo para incremento mensal.");
+
+		// Executando funcionalidade
+		sut.criarNovo(grupo);
+	}
 }

@@ -38,6 +38,14 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 		if(grupo.getMensalidadeInicial() < 0.0) {
 			throw new GrupoInvalidoException("Grupo com mensalidade inicial invalida. Atribua um valor maior que 0 para mensalidade inicial.");
 		}
+
+		if(grupo.getIncrementoMensal() == null) {
+			throw new GrupoInvalidoException("Grupo sem incremento mensal. Atribua um valor para incremento mensal.");
+		}
+
+		if(grupo.getIncrementoMensal() < 0.0) {
+			throw new GrupoInvalidoException("Grupo com incremento mensal negativo. Atribua um valor positivo para incremento mensal.");
+		}
 	}
 
 }
