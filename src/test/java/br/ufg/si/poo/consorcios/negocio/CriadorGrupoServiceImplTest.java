@@ -1,7 +1,8 @@
 package br.ufg.si.poo.consorcios.negocio;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 
@@ -16,11 +17,13 @@ import br.ufg.si.poo.consorcios.modelo.Consorciado;
 import br.ufg.si.poo.consorcios.modelo.Grupo;
 import br.ufg.si.poo.consorcios.negocio.exceptions.GrupoInvalidoException;
 import br.ufg.si.poo.consorcios.negocio.impl.CriadorGrupoServiceImpl;
+import br.ufg.si.poo.consorcios.repositorio.ContemplacaoRepositorio;
 import br.ufg.si.poo.consorcios.repositorio.GrupoRepositorio;
 
 public class CriadorGrupoServiceImplTest {
 
 	@Mock private GrupoRepositorio repositorioMock;
+	@Mock private ContemplacaoRepositorio contemplacaoRepositorioMock;
 
 	// Inicia uma Rule. Uma rule é uma regra verificada ao final da execução de cada
 	// teste, verificando se uma exceção foi lançada ou não.
@@ -40,7 +43,7 @@ public class CriadorGrupoServiceImplTest {
 		MockitoAnnotations.initMocks(this);
 
 		// Cria a instancia de CriadorGrupoService para testes injetando as dependências necessárias
-		sut = new CriadorGrupoServiceImpl(repositorioMock);
+		sut = new CriadorGrupoServiceImpl(repositorioMock, contemplacaoRepositorioMock);
 
 		// Criando entidades de modelo para serem usadas no teste
 		// Criando o usuário responsável pelo Grupo
@@ -278,5 +281,57 @@ public class CriadorGrupoServiceImplTest {
 
 		// Verificando se o grupo será salvo
 		verify(repositorioMock).save(grupo);
+	}
+
+	@Test
+	public void deve_ser_possivel_finalizar_criacao_grupo_gerando_as_contemplacoes() throws Exception {
+		// Criando participantes
+		Consorciado novo = new Consorciado();
+		novo.setNome("Leticia");
+		novo.setEmail("leticia@email.com");
+		novo.setCpf("83432536801");
+
+		Consorciado novo2 = new Consorciado();
+		novo2.setNome("Amanda");
+		novo2.setEmail("amanda@email.com");
+		novo2.setCpf("95815455814");
+
+		Consorciado novo3 = new Consorciado();
+		novo3.setNome("Fernanda");
+		novo3.setEmail("fernanda@email.com");
+		novo3.setCpf("14656216879");
+
+		// Adicionando participantes ao grupo
+		grupo.getParticipantes().add(cons);
+		grupo.getParticipantes().add(novo);
+		grupo.getParticipantes().add(novo2);
+		grupo.getParticipantes().add(novo3);
+
+		// Executando funcionalidade
+		sut.iniciar(grupo);
+
+		// Verificando se contemplacoes criadas foram salvas
+		verify(contemplacaoRepositorioMock).save(grupo.getContemplacoes().get(0));
+		verify(contemplacaoRepositorioMock).save(grupo.getContemplacoes().get(1));
+		verify(contemplacaoRepositorioMock).save(grupo.getContemplacoes().get(2));
+		verify(contemplacaoRepositorioMock).save(grupo.getContemplacoes().get(3));
+
+
+		// Verificando criação das contemplações
+		assertEquals("Jéssica Millene", grupo.getContemplacoes().get(0).getContemplado().getNome());
+		assertEquals(200.0, grupo.getContemplacoes().get(0).getMensalidade(), 0.0001);
+		assertEquals(600.0, grupo.getContemplacoes().get(0).getTotalContemplacao(), 0.00001);
+
+		assertEquals("Leticia", grupo.getContemplacoes().get(1).getContemplado().getNome());
+		assertEquals(204.0, grupo.getContemplacoes().get(1).getMensalidade(), 0.0001);
+		assertEquals(612.0, grupo.getContemplacoes().get(1).getTotalContemplacao(), 0.00001);
+
+		assertEquals("Amanda", grupo.getContemplacoes().get(2).getContemplado().getNome());
+		assertEquals(208.0, grupo.getContemplacoes().get(2).getMensalidade(), 0.0001);
+		assertEquals(624.0, grupo.getContemplacoes().get(2).getTotalContemplacao(), 0.00001);
+
+		assertEquals("Fernanda", grupo.getContemplacoes().get(3).getContemplado().getNome());
+		assertEquals(212.0, grupo.getContemplacoes().get(3).getMensalidade(), 0.0001);
+		assertEquals(636.0, grupo.getContemplacoes().get(3).getTotalContemplacao(), 0.00001);
 	}
 }

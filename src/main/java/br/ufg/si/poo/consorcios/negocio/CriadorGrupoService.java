@@ -35,4 +35,11 @@ public interface CriadorGrupoService {
 	 */
 	void adicionarParticipantes(Grupo grupo, List<Consorciado> novos);
 
+	/**
+	 * Inicializa o grupo criando as contemplações dos participantes.
+	 *
+	 * @param grupo em formação
+	 */
+	void iniciar(Grupo grupo);
+
 }

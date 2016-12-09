@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.ufg.si.poo.consorcios.modelo.Consorciado;
+import br.ufg.si.poo.consorcios.modelo.Contemplacao;
 import br.ufg.si.poo.consorcios.modelo.Grupo;
 import br.ufg.si.poo.consorcios.negocio.CriadorGrupoService;
 import br.ufg.si.poo.consorcios.negocio.exceptions.GrupoInvalidoException;
 import br.ufg.si.poo.consorcios.negocio.exceptions.NegocioException;
+import br.ufg.si.poo.consorcios.repositorio.ContemplacaoRepositorio;
 import br.ufg.si.poo.consorcios.repositorio.GrupoRepositorio;
 
 /**
@@ -17,9 +19,11 @@ import br.ufg.si.poo.consorcios.repositorio.GrupoRepositorio;
 public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 
 	private GrupoRepositorio repositorio;
+	private ContemplacaoRepositorio contemplacaoRepositorio;
 
-	public CriadorGrupoServiceImpl(GrupoRepositorio repositorio) {
+	public CriadorGrupoServiceImpl(GrupoRepositorio repositorio, ContemplacaoRepositorio contemplacaoRepositorio) {
 		this.repositorio = repositorio;
+		this.contemplacaoRepositorio = contemplacaoRepositorio;
 	}
 
 	@Override
@@ -41,6 +45,18 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 		grupo.getParticipantes().addAll(novos);
 
 		repositorio.save(grupo);
+	}
+
+	@Override
+	public void iniciar(Grupo grupo) {
+		for(int i = 0 ; i < grupo.getParticipantes().size() ; i++) {
+			Contemplacao contemplacao = new Contemplacao();
+			contemplacao.setContemplado(grupo.getParticipantes().get(i));
+			contemplacao.setMensalidade(grupo.getMensalidadeInicial() + (i * grupo.getIncrementoMensal()));
+			contemplacao.setTotalContemplacao(contemplacao.getMensalidade() * (grupo.getParticipantes().size() - 1));
+			grupo.getContemplacoes().add(contemplacao);
+			contemplacaoRepositorio.save(contemplacao);
+		}
 	}
 
 	private void validaDadosDoGrupo(Grupo grupo) throws GrupoInvalidoException {

@@ -15,9 +15,11 @@ public class Grupo {
 	private Integer diaPagamentoMensalidade;
 	private Integer diaPagamentoContemplacao;
 	private List<Consorciado> participantes;
+	private List<Contemplacao> contemplacoes;
 
 	public Grupo() {
 		participantes = new ArrayList<>();
+		contemplacoes = new ArrayList<>();
 	}
 
 	/**
@@ -91,6 +93,18 @@ public class Grupo {
 	 */
 	public void setParticipantes(List<Consorciado> participantes) {
 		this.participantes = participantes;
+	}
+	/**
+	 * @return the contemplacoes
+	 */
+	public List<Contemplacao> getContemplacoes() {
+		return contemplacoes;
+	}
+	/**
+	 * @param contemplacoes the contemplacoes to set
+	 */
+	public void setContemplacoes(List<Contemplacao> contemplacoes) {
+		this.contemplacoes = contemplacoes;
 	}
 
 }
