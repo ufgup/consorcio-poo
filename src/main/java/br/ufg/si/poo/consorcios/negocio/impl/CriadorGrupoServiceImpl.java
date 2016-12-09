@@ -2,6 +2,8 @@ package br.ufg.si.poo.consorcios.negocio.impl;
 
 import br.ufg.si.poo.consorcios.modelo.Grupo;
 import br.ufg.si.poo.consorcios.negocio.CriadorGrupoService;
+import br.ufg.si.poo.consorcios.negocio.exceptions.GrupoInvalidoException;
+import br.ufg.si.poo.consorcios.negocio.exceptions.NegocioException;
 import br.ufg.si.poo.consorcios.repositorio.GrupoRepositorio;
 
 /**
@@ -17,8 +19,20 @@ public class CriadorGrupoServiceImpl implements CriadorGrupoService {
 	}
 
 	@Override
-	public void criarNovo(Grupo grupo) {
+	public void criarNovo(Grupo grupo) throws NegocioException {
+		validaDadosDoGrupo(grupo);
+
 		repositorio.save(grupo);
+	}
+
+	private void validaDadosDoGrupo(Grupo grupo) throws GrupoInvalidoException {
+		if(grupo.getResponsavel() == null) {
+			throw new GrupoInvalidoException("Grupo sem consorciado responsável. Atribua um consorciado responsável.");
+		}
+
+		if(grupo.getMensalidadeInicial() == null) {
+			throw new GrupoInvalidoException("Grupo sem mensalidade inicial. Atribua um valor para mensalidade inicial.");
+		}
 	}
 
 }
