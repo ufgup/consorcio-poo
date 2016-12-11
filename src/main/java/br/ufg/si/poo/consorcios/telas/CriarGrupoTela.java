@@ -131,8 +131,11 @@ public class CriarGrupoTela extends AbstractTelaApp {
 
 			try {
 				service.criarNovo(grupo);
+				service.iniciar(grupo);
 
 				System.out.println("Grupo criado com sucesso");
+
+				System.out.println("Total de contemplações desse grupo: " + grupo.getContemplacoes().size());
 
 				ContemplacoesGrupoTela contemplacoesTela = new ContemplacoesGrupoTela();
 				contemplacoesTela.setContemplacoes(grupo.getContemplacoes());
