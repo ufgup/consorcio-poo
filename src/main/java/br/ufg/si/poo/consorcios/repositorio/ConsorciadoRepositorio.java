@@ -1,5 +1,7 @@
 package br.ufg.si.poo.consorcios.repositorio;
 
+import java.util.List;
+
 import br.ufg.si.poo.consorcios.modelo.Consorciado;
 
 /**
@@ -31,5 +33,12 @@ public interface ConsorciadoRepositorio {
 	 * @return uma instância de {@link Consorciado} com aquele CPF ou <code>null</code> caso não exista
 	 */
 	Consorciado findByCpf(String cpf);
+
+	/**
+	 * Retorna todos os consorciados presentes no repositorio
+	 *
+	 * @return consorciados
+	 */
+	List<Consorciado> findAll();
 
 }

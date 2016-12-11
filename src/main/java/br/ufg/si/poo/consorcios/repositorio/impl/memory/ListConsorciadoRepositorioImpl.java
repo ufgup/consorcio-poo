@@ -10,10 +10,10 @@ public class ListConsorciadoRepositorioImpl implements ConsorciadoRepositorio {
 
 	private static ListConsorciadoRepositorioImpl instance;
 
-	private List<Consorciado> consorciado;
+	private List<Consorciado> consorciados;
 
 	private ListConsorciadoRepositorioImpl() {
-		consorciado = new ArrayList<>();
+		consorciados = new ArrayList<>();
 	}
 
 	public static ListConsorciadoRepositorioImpl getInstanceOf() {
@@ -25,13 +25,13 @@ public class ListConsorciadoRepositorioImpl implements ConsorciadoRepositorio {
 
 	@Override
 	public void save(Consorciado cons) {
-		consorciado.add(cons);
+		consorciados.add(cons);
 		System.out.println("Consorciado salvo com sucesso");
 	}
 
 	@Override
 	public Consorciado findByEmail(String email) {
-		for(Consorciado cons : consorciado) {
+		for(Consorciado cons : consorciados) {
 			if(cons.getEmail().equals(email)) {
 				return cons;
 			}
@@ -41,12 +41,17 @@ public class ListConsorciadoRepositorioImpl implements ConsorciadoRepositorio {
 
 	@Override
 	public Consorciado findByCpf(String cpf) {
-		for(Consorciado cons : consorciado) {
+		for(Consorciado cons : consorciados) {
 			if(cons.getCpf().equals(cpf)) {
 				return cons;
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public List<Consorciado> findAll() {
+		return consorciados;
 	}
 
 }
