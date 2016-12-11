@@ -1,5 +1,10 @@
 package br.ufg.si.poo.consorcios.telas;
 
+import br.ufg.si.poo.consorcios.modelo.Consorciado;
+import br.ufg.si.poo.consorcios.negocio.CadastroConsorciadoService;
+import br.ufg.si.poo.consorcios.negocio.exceptions.NegocioException;
+import br.ufg.si.poo.consorcios.negocio.impl.CadastroConsorciadoServiceImpl;
+import br.ufg.si.poo.consorcios.repositorio.impl.memory.ListConsorciadoRepositorioImpl;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -11,6 +16,19 @@ import javafx.stage.Stage;
 @SuppressWarnings("restriction")
 public class CriarConsorciadoTela extends AbstractTelaApp {
 
+
+	private Label nomeLabel;
+	private TextField nomeText;
+
+	private Label emailLabel;
+	private TextField emailText;
+
+	private Label cpfLabel;
+	private TextField cpfText;
+
+	private Button btnSalvar;
+	private Button btnVoltar;
+
 	@Override
 	protected String setTituloTela() {
 		return "Criar Consorciado";
@@ -18,38 +36,86 @@ public class CriarConsorciadoTela extends AbstractTelaApp {
 
 	@Override
 	protected void montarTela(Stage primaryStage) {
-		Label nomeLabel = new Label();
+		nomeLabel = new Label();
 		nomeLabel.setText("Digite o nome completo:");
 		nomeLabel.setAlignment(Pos.CENTER_LEFT);
 		grid.add(nomeLabel, 0, 0);
 
-		TextField nomeText = new TextField();
+		nomeText = new TextField();
 		grid.add(nomeText, 1, 0);
 
-		Label emailLabel = new Label();
+		emailLabel = new Label();
 		emailLabel.setText("Digite o email:");
 		emailLabel.setAlignment(Pos.CENTER_LEFT);
 		grid.add(emailLabel, 0, 1);
 
-		TextField emailText = new TextField();
+		emailText = new TextField();
 		grid.add(emailText, 1, 1);
 
-		Label cpfLabel = new Label();
+		cpfLabel = new Label();
 		cpfLabel.setText("Digite o CPF sem máscara:");
 		cpfLabel.setAlignment(Pos.CENTER_LEFT);
 		grid.add(cpfLabel, 0, 2);
 
-		TextField cpfText = new TextField();
+		cpfText = new TextField();
 		grid.add(cpfText, 1, 2);
 
-		Button btn = new Button();
-		btn.setOnAction(new EventHandler<ActionEvent>() {
+		btnVoltar = new Button();
+		btnVoltar.setText("Voltar");
+		btnVoltar.setOnAction(new EventoVoltarPrincipal(primaryStage));
+		grid.add(btnVoltar, 0, 3);
 
-			@Override
-			public void handle(ActionEvent event) {
-				// TODO: Chamar servico de cadastro de consorciados
+		btnSalvar = new Button();
+		btnSalvar.setText("Salvar");
+		btnSalvar.setOnAction(new EventoSalvarConsorciado());
+		grid.add(btnSalvar, 1, 3);
+	}
+
+
+	private class EventoSalvarConsorciado implements EventHandler<ActionEvent>  {
+		@Override
+		public void handle(ActionEvent event) {
+			CadastroConsorciadoService service = new CadastroConsorciadoServiceImpl(ListConsorciadoRepositorioImpl.getInstanceOf());
+
+			Consorciado cons = new Consorciado();
+			cons.setNome(nomeText.getText());
+			cons.setEmail(emailText.getText());
+			cons.setCpf(cpfText.getText());
+
+			try {
+				service.cadastrarNovo(cons);
+
+				limparCaixasTextos(nomeText, emailText, cpfText);
+			} catch (NegocioException e) {
+				System.err.println("Ocorreu um erro ao tentar salvar consorciado: " + e.getMessage());
 			}
-		});
+		}
+
+		private void limparCaixasTextos(TextField nomeText, TextField emailText, TextField cpfText) {
+			nomeText.clear();
+			emailText.clear();
+			cpfText.clear();
+		}
+	}
+
+	private class EventoVoltarPrincipal implements EventHandler<ActionEvent> {
+
+		private Stage primaryStage;
+
+		public EventoVoltarPrincipal(Stage primaryStage) {
+			this.primaryStage = primaryStage;
+		}
+
+		@Override
+		public void handle(ActionEvent event) {
+			ConsorciosApp app = new ConsorciosApp();
+			try {
+				app.start(primaryStage);
+			} catch (Exception e) {
+				System.out.println("Deu erro ao tentar voltar para a pagina inicial");
+			}
+		}
+
 	}
 
 }
