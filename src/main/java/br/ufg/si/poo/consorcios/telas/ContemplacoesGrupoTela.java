@@ -2,6 +2,7 @@ package br.ufg.si.poo.consorcios.telas;
 
 import java.util.List;
 
+import br.ufg.si.poo.consorcios.modelo.Consorciado;
 import br.ufg.si.poo.consorcios.modelo.Contemplacao;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
@@ -31,9 +32,9 @@ public class ContemplacoesGrupoTela extends AbstractTelaApp {
 
 		table.setEditable(false);
 
-		TableColumn<Contemplacao, String> contempladoColumn = new TableColumn<Contemplacao, String>("Contemplado");
+		TableColumn<Contemplacao, Consorciado> contempladoColumn = new TableColumn<Contemplacao, Consorciado>("Contemplado");
 		contempladoColumn.setMinWidth(100);
-		contempladoColumn.setCellValueFactory(new PropertyValueFactory<Contemplacao, String>("contemplado"));
+		contempladoColumn.setCellValueFactory(new PropertyValueFactory<Contemplacao, Consorciado>("contemplado"));
 
 		TableColumn<Contemplacao, Double> mensalidadeColumn = new TableColumn<Contemplacao, Double>("Mensalidade");
 		mensalidadeColumn.setMinWidth(50);
