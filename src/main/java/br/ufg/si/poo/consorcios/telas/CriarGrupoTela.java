@@ -107,11 +107,17 @@ public class CriarGrupoTela extends AbstractTelaApp {
 
 		btnSalvar = new Button();
 		btnSalvar.setText("Salvar");
-		btnSalvar.setOnAction(new EventoSalvarGrupo());
+		btnSalvar.setOnAction(new EventoSalvarGrupo(primaryStage));
 		grid.add(btnSalvar, 1, 6);
 	}
 
 	private class EventoSalvarGrupo implements EventHandler<ActionEvent> {
+
+		private Stage primaryStage;
+
+		public EventoSalvarGrupo(Stage primaryStage) {
+			this.primaryStage = primaryStage;
+		}
 
 		@Override
 		public void handle(ActionEvent event) {
@@ -125,8 +131,17 @@ public class CriarGrupoTela extends AbstractTelaApp {
 
 			try {
 				service.criarNovo(grupo);
+
+				System.out.println("Grupo criado com sucesso");
+
+				ContemplacoesGrupoTela contemplacoesTela = new ContemplacoesGrupoTela();
+				contemplacoesTela.setContemplacoes(grupo.getContemplacoes());
+				contemplacoesTela.start(primaryStage);
+
 			} catch (NegocioException e) {
 				System.err.println("Deu erro na hora de criar o grupo: " + e.getMessage());
+			} catch (Exception e) {
+				System.err.println("Deu erro na hora de mostrar a tela de contemplacoes: " + e.getMessage());
 			}
 		}
 
